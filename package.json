@@ -1,0 +1,42 @@
+{
+  "name": "s3man",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server/server.js",
+    "build-next": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/dotenv": "^6.1.0",
+    "antd": "^3.11.6",
+    "aws-sdk": "^2.382.0",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "knex": "^0.16.3",
+    "next": "^7.0.2",
+    "pg": "^7.8.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "server/**/*.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "@types/next": "^7.0.6",
+    "@types/node": "^10.12.18",
+    "@types/react": "^16.7.18",
+    "@types/react-dom": "^16.0.11",
+    "@types/styled-jsx": "^2.2.7",
+    "@zeit/next-typescript": "^1.1.1",
+    "nodemon": "^1.18.9",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  }
+}
