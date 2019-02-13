@@ -1,0 +1,6 @@
+{
+  "name": "s3admin",
+  "description": "S3 administration UI",
+  "repository": "https://github.com/omaksi/s3admin",
+  "keywords": ["aws", "s3", "aws-s3"]
+}
