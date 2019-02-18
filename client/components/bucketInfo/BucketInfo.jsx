@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { Input, Button } from 'antd'
+import { Button } from 'antd'
 
 /**
  * @typedef {object} Props

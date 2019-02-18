@@ -41,6 +41,7 @@ module.exports = {
 
     if (!req.body || !req.body.action || !req.body.accessKeyId || !req.body.secretAccessKey) {
       res.status(400).send(Error('bad request'))
+      return
     }
 
     const s3 = new AWS.S3({
@@ -52,6 +53,7 @@ module.exports = {
 
     if (response) {
       res.send(response)
+      return
     }
 
     res.status(400).send('Fooo')

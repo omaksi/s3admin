@@ -4,21 +4,23 @@ import React from 'react'
 
 import { Statistic, Row, Col, Button } from 'antd'
 
-import fetcher from '../../../utils/fetcher'
+import ObjectList from '../objectTable/ObjectList'
+// import fetcher from '../../../utils/fetcher'
 
 import { formatFileSize } from '../../helpers'
 
 /**
  * @typedef {object} Props
- * @prop {string} accessKeyId
- * @prop {string} secretAccessKey
- * @prop {string | undefined} selectedBucket
+ * @prop {() => void} onAnalyzeSubmit
+ * @prop {number} totalFiles
+ * @prop {number} totalSize
+ * @prop {import('aws-sdk').S3.ObjectList} largest
+ * @prop {import('aws-sdk').S3.ObjectList} smallest
+ * @prop {boolean} autoAnalyze
  */
 
 /**
  * @typedef {object} State
- * @prop {number} totalFiles
- * @prop {number} totalSize
  * @prop {boolean} loading
  */
 
@@ -32,34 +34,6 @@ export default class Statistics extends React.Component {
     loading: false,
   }
 
-  handleAnalyzeSubmit = async () => {
-    this.setState({
-      loading: true,
-    })
-
-    /** @type {[number, number]} */
-    const res = await fetcher(
-      '/s3statistic',
-      {
-        method: 'POST',
-      },
-      {
-        action: 'countStatistics',
-        params: {
-          Bucket: this.props.selectedBucket,
-        },
-        accessKeyId: this.props.accessKeyId,
-        secretAccessKey: this.props.secretAccessKey,
-      }
-    )
-
-    this.setState({
-      totalFiles: res[0],
-      totalSize: res[1],
-      loading: false,
-    })
-  }
-
   render() {
     return (
       <div className="Statistics">
@@ -69,17 +43,42 @@ export default class Statistics extends React.Component {
             margin: 0 auto;
           }
         `}</style>
-        <Button type="primary" onClick={this.handleAnalyzeSubmit}>
-          Analyze Bucket
-        </Button>
-        <Row gutter={16}>
+        {!this.props.autoAnalyze && (
+          <Button type="primary" onClick={this.props.onAnalyzeSubmit}>
+            Analyze Bucket
+          </Button>
+        )}
+        <Row gutter={16} justify="center">
           <Col span={12}>
-            <Statistic title="File count" value={this.state.totalFiles} />
+            <Statistic title="File count" value={this.props.totalFiles} />
           </Col>
           <Col span={12}>
-            <Statistic title="Total size" value={formatFileSize(this.state.totalSize)} />
+            <Statistic title="Total size" value={formatFileSize(this.props.totalSize)} />
+          </Col>
+          <Col span={12}>
+            <Statistic
+              title="Largest file"
+              value={formatFileSize(this.props.largest[0].Size ? this.props.largest[0].Size : 0)}
+            />
+          </Col>
+          <Col span={12}>
+            <Statistic
+              title="Smallest file"
+              value={formatFileSize(this.props.smallest[0].Size ? this.props.smallest[0].Size : 0)}
+            />
           </Col>
         </Row>
+        <br />
+        <br />
+        <br />
+        <h4>100 Largest files</h4>
+        <ObjectList objects={this.props.largest} />
+        <br />
+        <br />
+        <br />
+
+        <h4>100 Smallest files</h4>
+        <ObjectList objects={this.props.smallest} />
       </div>
     )
   }

@@ -52,7 +52,7 @@ export default class Login extends React.Component {
         <style jsx>{`
           .Login {
             width: 500px;
-            margin: 0 auto;
+            margin: 100px auto 0;
           }
 
           .small {
@@ -61,7 +61,10 @@ export default class Login extends React.Component {
         `}</style>
         <h1>s3admin - Login</h1>
 
-        <p className="small">* Access Key Id and Secret Access Key are not permanently stored.</p>
+        <p className="small">
+          * Access Key Id and Secret Access Key are not permanently stored for security reasons.{' '}
+          <br />* If you close the window you will need to reauthenticate.
+        </p>
         <Input
           onChange={this.handleInputChange('accessKeyId')}
           value={this.state.accessKeyId}

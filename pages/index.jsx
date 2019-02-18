@@ -13,7 +13,13 @@ import HeaderInfo from '../client/components/headerInfo/HeaderInfo'
 import Search from '../client/components/search/Search'
 import Navigation from '../client/components/navigation/Navigation'
 
-import { listObjectsV2, getBucketLocation, listBuckets } from '../client/fetchers'
+import {
+  listObjectsV2,
+  getBucketLocation,
+  listBuckets,
+  genericS3Fetcher,
+  bucketInfoActions,
+} from '../client/fetchers'
 
 import fetcher from '../utils/fetcher'
 
@@ -42,6 +48,9 @@ import { Tabs, Empty } from 'antd'
  * @prop {boolean} autoAnalyze
  * @prop {number} totalFiles
  * @prop {number} totalSize
+ * @prop {import('aws-sdk').S3.ObjectList} largest
+ * @prop {import('aws-sdk').S3.ObjectList} smallest
+ * @prop {string} loginError
  * @prop {import('aws-sdk').S3.Types.Buckets | undefined } buckets
  * @prop {import('aws-sdk').S3.Types.ListObjectsV2Output | undefined} objects
  * @prop {import('aws-sdk').S3.Types.GetBucketLocationOutput | undefined} bucketLocation
@@ -69,7 +78,19 @@ export default class Index extends React.Component {
     autoAnalyze: true,
     totalFiles: 0,
     totalSize: 0,
+    largest: [],
+    smallest: [],
     continuationToken: '',
+    loginError: '',
+  }
+
+  componentDidMount = () => {
+    window.addEventListener('beforeunload', (e) => {
+      // Cancel the event
+      e.preventDefault()
+      // Chrome requires returnValue to be set
+      e.returnValue = 'Are you sure?'
+    })
   }
 
   isLoggedIn = () => {
@@ -100,12 +121,18 @@ export default class Index extends React.Component {
 
     console.log('received res', res)
 
-    this.setState({
-      accessKeyId: accessKeyId,
-      secretAccessKey: secretAccessKey,
-      isLoggedIn: true,
-      buckets: res.Buckets,
-    })
+    if (res.statusCode) {
+      this.setState({
+        loginError: res.message,
+      })
+    } else {
+      this.setState({
+        accessKeyId: accessKeyId,
+        secretAccessKey: secretAccessKey,
+        isLoggedIn: true,
+        buckets: res.Buckets,
+      })
+    }
   }
 
   /**
@@ -137,6 +164,8 @@ export default class Index extends React.Component {
     if (this.state.autoAnalyze) {
       this.handleAnalyzeBucket()
     }
+
+    // this.handleLoadBucketInfo()
   }
 
   /**
@@ -253,7 +282,7 @@ export default class Index extends React.Component {
       isLoading: true,
     })
 
-    /** @type {[number, number]} */
+    /** @type {[number, number,import('aws-sdk').S3.ObjectList,import('aws-sdk').S3.ObjectList ]} */
     const res = await fetcher(
       '/s3statistic',
       {
@@ -269,10 +298,29 @@ export default class Index extends React.Component {
       }
     )
 
+    console.log('ANALYTICS', res)
+
     this.setState({
       totalFiles: res[0],
       totalSize: res[1],
+      largest: res[2],
+      smallest: res[3],
       isLoading: false,
+    })
+  }
+
+  handleLoadBucketInfo = () => {
+    Promise.all(
+      bucketInfoActions.map((action) =>
+        genericS3Fetcher(
+          action,
+          { Bucket: this.state.selectedBucket },
+          this.state.accessKeyId,
+          this.state.secretAccessKey
+        )
+      )
+    ).then((values) => {
+      console.log(values)
     })
   }
 
@@ -296,7 +344,9 @@ export default class Index extends React.Component {
           }
         `}</style>
 
-        {!this.isLoggedIn() && <Login onLoginSubmit={this.handleLoginSubmit} />}
+        {!this.isLoggedIn() && (
+          <Login onLoginSubmit={this.handleLoginSubmit} error={this.state.loginError} />
+        )}
         {this.isLoggedIn() && (
           <div className="grid">
             <div className="left_col">
@@ -350,14 +400,17 @@ export default class Index extends React.Component {
                     <Empty description="To browse files please select a Bucket from the left menu." />
                   )}
                 </Tabs.TabPane>
-                <Tabs.TabPane disabled={!this.state.selectedBucket} tab="Bucket Info" key="2">
+                {/* <Tabs.TabPane disabled={!this.state.selectedBucket} tab="Bucket Info" key="2">
                   <BucketInfo />
-                </Tabs.TabPane>
+                </Tabs.TabPane> */}
                 <Tabs.TabPane disabled={!this.state.selectedBucket} tab="Analytics" key="3">
                   <Statistics
-                    accessKeyId={this.state.accessKeyId}
-                    secretAccessKey={this.state.secretAccessKey}
-                    selectedBucket={this.state.selectedBucket}
+                    onAnalyzeSubmit={this.handleAnalyzeBucket}
+                    totalSize={this.state.totalSize}
+                    totalFiles={this.state.totalFiles}
+                    smallest={this.state.smallest}
+                    largest={this.state.largest}
+                    autoAnalyze={this.state.autoAnalyze}
                   />
                 </Tabs.TabPane>
               </Tabs>

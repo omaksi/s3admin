@@ -40,6 +40,12 @@ export default class HeaderInfo extends React.Component {
             right: 20px;
           }
         `}</style>
+        {this.props.isLoading && (
+          <>
+            <Spin indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />} />
+            &nbsp;&nbsp;&nbsp;Loading...&nbsp;&nbsp;&nbsp;
+          </>
+        )}
         <span>
           <Checkbox checked={this.props.autoAnalyze} onChange={this.handleAutoAnalyzeChange}>
             Auto-Analyze
@@ -64,9 +70,6 @@ export default class HeaderInfo extends React.Component {
           <span>
             Region: <strong>{this.props.bucketLocation.LocationConstraint}</strong>
           </span>
-        )}
-        {this.props.isLoading && (
-          <Spin indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />} />
         )}
       </div>
     )
