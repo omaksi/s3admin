@@ -4,13 +4,17 @@
 
 <a href="https://www.heroku.com/deploy/?template=https://github.com/omaksi/s3admin"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy"></a>
 
+### Demo
+
+https://s3admin-demo.herokuapp.com/
+
 ### Installation
 
     TBA
 
 ### Usage
 
-1. Log in with AWS IAM credentials
+1. Log in with AWS credentials
 2. Analyze
 
 ### License
