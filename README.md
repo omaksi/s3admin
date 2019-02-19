@@ -2,7 +2,7 @@
 
 Browse your buckets and check usage without the need to log into AWS Console
 
-### Features
+## Features
 
 - Standalone
 - Secure - your credentials are not stored
@@ -13,39 +13,48 @@ Browse your buckets and check usage without the need to log into AWS Console
 - Analyze Bucket size & Object count
 - See list of largest and smallest files
 
-### Requirements
+## Screenshot
 
-Programmatic usage credentials from AWS IAM with the proper ACL settings to access your S3 buckets
+<p align="center">
+<a href="./screenshot.png" target="_blank">
+  <img src="./screenshot.png" alt="Size Limit example"
+       width="600" >
+       </a>
+</p>
 
-### Demo
+## Requirements
+
+Programmatic usage credentials from AWS IAM with the proper ACL settings to access your S3 buckets (Access Key ID, Secret Access Key)
+
+## Demo
 
 <a href="https://s3admin-demo.herokuapp.com/" target="_blank">-> Demo <-</a>
 
-### Deploy
+## Deploy
 
-Heroku
+#### Heroku
 
 <a href="https://www.heroku.com/deploy/?template=https://github.com/omaksi/s3admin"><img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku"></a>
 
-Docker
+#### Docker
 
     docker run -p 8000:3000 omaksi/s3admin
 
-### Development
+## Development
 
 Node.js and yarn required
 
     yarn
     yarn run dev
 
-### TODO
+## TODO
 
 - Bucket Settings
 
-### Contributing
+## Contributing
 
 Please open an issue :)
 
-### License
+## License
 
 MIT
