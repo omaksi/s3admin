@@ -1,6 +1,6 @@
 // @ts-check
 
-import { formatFileSize } from '../../helpers'
+import { formatFileSize, formatDate } from '../../helpers'
 
 /**
  * @typedef {import('./types').TableRecord} Record
@@ -48,9 +48,7 @@ export const computeTableData = (objects, activePrefix) => {
     ? objects.Contents.map((key) => ({
         title: key.Key ? key.Key : '-',
         size: key.Size ? formatFileSize(key.Size) : '0',
-        lastModified: new Date(key.LastModified ? key.LastModified : 0).toLocaleString('en-US', {
-          timeZone: 'UTC',
-        }),
+        lastModified: formatDate(key.LastModified),
         key: key.Key ? key.Key : '-',
         isUp: false,
         isFolder: false,

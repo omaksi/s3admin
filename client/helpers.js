@@ -12,3 +12,15 @@ export const formatFileSize = (size) => {
   // @ts-ignore
   return (size / Math.pow(1024, i)).toFixed(2) * 1 + ['B', 'kB', 'MB', 'GB', 'TB'][i]
 }
+
+/**
+ * Formats Date
+ *
+ * @param {Date | undefined} date
+ * @return {string}
+ */
+export const formatDate = (date) => {
+  return new Date(date ? date : 0).toLocaleString('en-US', {
+    timeZone: 'UTC',
+  })
+}

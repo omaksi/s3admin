@@ -58,13 +58,19 @@ export default class Statistics extends React.Component {
           <Col span={12}>
             <Statistic
               title="Largest file"
-              value={formatFileSize(this.props.largest[0].Size ? this.props.largest[0].Size : 0)}
+              value={formatFileSize(
+                this.props.largest[0] && this.props.largest[0].Size ? this.props.largest[0].Size : 0
+              )}
             />
           </Col>
           <Col span={12}>
             <Statistic
               title="Smallest file"
-              value={formatFileSize(this.props.smallest[0].Size ? this.props.smallest[0].Size : 0)}
+              value={formatFileSize(
+                this.props.smallest[0] && this.props.smallest[0].Size
+                  ? this.props.smallest[0].Size
+                  : 0
+              )}
             />
           </Col>
         </Row>

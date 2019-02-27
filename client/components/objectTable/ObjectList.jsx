@@ -4,7 +4,7 @@ import React from 'react'
 
 import { Table, Icon } from 'antd'
 
-import { formatFileSize } from '../../helpers'
+import { formatFileSize, formatDate } from '../../helpers'
 
 /**
  * @typedef {object} Props
@@ -47,6 +47,9 @@ export default class ObjectList extends React.Component {
         title: 'Last Modified',
         dataIndex: 'LastModified',
         key: 'lastModified',
+        render: (text, record) => {
+          return formatDate(record.LastModified)
+        },
         width: 300,
       },
       {

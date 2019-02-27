@@ -142,7 +142,7 @@ export default class Index extends React.Component {
   handleBucketSelectChange = async (value) => {
     console.log('handleBucketSelectChange', value)
 
-    this.setState({ isLoading: true })
+    this.setState({ isLoading: true, totalFiles: 0, totalSize: 0, largest: [], smallest: [] })
 
     /** @type {import('aws-sdk').S3.Types.GetBucketLocationOutput} */
     const bucketLocationRes = await getBucketLocation(
