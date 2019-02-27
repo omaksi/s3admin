@@ -4,21 +4,30 @@ Browse your buckets and check usage without the need to log into AWS Console
 
 ## Features
 
-- Standalone
-- Secure - your credentials are not stored
-- One click deploy to Heroku or deploy anywhere with Docker
-- Browse your Buckets and Objects
-- Set a custom Delimiter
-- Search by Prefix
-- Analyze Bucket size & Object count
-- See list of largest and smallest files
+- **Browse** your Buckets and Objects
+  <!-- - Set a custom **Delimiter** -->
+- **Search** by Prefix
+- **Analyze** Bucket size & Object count
+- **List** largest and smallest files
+- **Secure** - your credentials are not stored
+- **Standalone** - node.js app
+- **One click deploy** to Heroku
+- **Deploy anywhere** with Docker
 
-## Screenshot
+## Screenshots
 
 <p align="center">
-<a href="./screenshot.png" target="_blank">
+<a href="https://raw.githubusercontent.com/omaksi/s3admin/master/screenshot2.png" target="_blank">
+  <img src="./screenshot2.png" alt="Size Limit example"
+       width="200" >
+       </a>
+<a href="https://raw.githubusercontent.com/omaksi/s3admin/master/screenshot.png" target="_blank">
   <img src="./screenshot.png" alt="Size Limit example"
-       width="600" >
+       width="200" >
+       </a>
+<a href="https://raw.githubusercontent.com/omaksi/s3admin/master/screenshot3.png" target="_blank">
+  <img src="./screenshot3.png" alt="Size Limit example"
+       width="200" >
        </a>
 </p>
 
